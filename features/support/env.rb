@@ -35,12 +35,12 @@ end
 # configurando a execução no jenkins
 # -----------------------------------------------------
 
-SitePrism.configure do |config|
-    config.use_implicit_waits = true
-  end
+# SitePrism.configure do |config|
+#     config.use_implicit_waits = true
+#   end
 
 Capybara.configure do |config|
-    config.default_driver = :selenium_chrome_headless
+    config.default_driver = :selenium_chrome
     # config.default_driver = :selenium #<== firefox
     
     config.app_host  = 'http://mark7.herokuapp.com'
