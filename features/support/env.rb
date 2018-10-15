@@ -11,40 +11,47 @@ require 'selenium-webdriver'
 if @browser.eql?('headless')
     puts 'Executando com headless'
 
-    Capybara.javascript_driver = :selenium
-    Capybara.run_server = false
+    # Capybara.javascript_driver = :selenium
+    # Capybara.run_server = false
     
-    args = ['--no-default-browser-check']
-    args = ['--disable-gpu']
-    args = ['--no-sandbox']
+    # args = ['--no-default-browser-check']
+    # args = ['--disable-gpu']
+    # args = ['--no-sandbox']
+
+# -----------------------------------------------------
+    Capybara.register_driver :selenium_chrome_headless_docker_friendly do |app|
+        Capybara::Selenium::Driver.load_selenium
+        browser_options = ::Selenium::WebDriver::Chrome::Options.new
+        browser_options.args << '--headless'
+        browser_options.args << '--disable-gpu'
+        # Sandbox cannot be used inside unprivileged Docker container
+        browser_options.args << '--no-sandbox'
+        Capybara::Selenium::Driver.new(app, browser: :chrome, url: 'http://selenium:4444/wd/hub',
+        options: browser_options)
+      end
+      
+ Capybara.javascript_driver = :selenium_chrome_headless_docker_friendly
+# -----------------------------------------------------
 
 
-#   browser_options.args << '--headless'
-#   browser_options.args << '--disable-gpu'
-#   # Sandbox cannot be used inside unprivileged Docker container
-#   browser_options.args << '--no-sandbox'
-#   Capybara::Selenium::Driver.new(app, browser: :chrome, options: browser_options)
-# end
 
-
-
-    caps = Selenium::WebDriver::Remote::Capabilities.chrome(
-        'chromeOptions' => { 'args' => args }
-    )
+# -----------------------------------------------------
+    # caps = Selenium::WebDriver::Remote::Capabilities.chrome(
+    #     'chromeOptions' => { 'args' => args }
+    # )
     
-    Capybara.register_driver :selenium do |app|
-        Capybara::Selenium::Driver.new(
-            app,
-            browser: :remote,
-            url: 'http://selenium:4444/wd/hub',
-            desired_capabilities: caps
-        )
-    end
+    # Capybara.register_driver :selenium do |app|
+    #     Capybara::Selenium::Driver.new(
+    #         app,
+    #         browser: :remote,
+    #         url: 'http://selenium:4444/wd/hub',
+    #         desired_capabilities: caps
+    #     )
+    # end
 else
     puts 'Executando sem headless oi??????'
 end
 
-# configurando a execução no jenkins
 # -----------------------------------------------------
 
 # SitePrism.configure do |config|
