@@ -17,8 +17,8 @@ pipeline {
         }
         stage ('Run Features'){
             steps{
-                // sh "bundle exec cucumber"
-                sh "bundle exec cucumber -t @nova_tarefa"
+                sh "bundle exec cucumber -p ci"
+                // sh "bundle exec cucumber -t @nova_tarefa"
             }
         }
     }
