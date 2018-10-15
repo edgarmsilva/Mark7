@@ -2,6 +2,22 @@ require 'capybara'
 require 'capybara/cucumber'
 require 'site_prism'
 
+@browser = ENV['BROWSER']
+
+if @browser.eql?('headless')
+    puts 'Executando com headless'
+
+    Capybara.javascript_driver = :selenium
+    Capybara.run_server = false
+
+    Capybara.register_driver : selenium do |app|
+    Capybara::Selenium:Driver.new
+
+    # parei aqui : 2:44
+
+else
+    puts 'Executando sem headless'
+end
 
 SitePrism.configure do |config|
     config.use_implicit_waits = true
