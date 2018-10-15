@@ -14,8 +14,9 @@ if @browser.eql?('headless')
     Capybara.javascript_driver = :selenium
     Capybara.run_server = false
     
-    args = ['--no-default-browser-check','--no-sandbox','--disable-gpu']
-
+    args = ['--no-default-browser-check',]
+    args = ['--disable-gpu']
+    args = ['--no-sandbox']
 
 
 #   browser_options.args << '--headless'
