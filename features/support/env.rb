@@ -14,7 +14,18 @@ if @browser.eql?('headless')
     Capybara.javascript_driver = :selenium
     Capybara.run_server = false
     
-    args = ['--no-default-browser-check']
+    args = ['--no-default-browser-check','--no-sandbox','--disable-gpu']
+
+
+
+#   browser_options.args << '--headless'
+#   browser_options.args << '--disable-gpu'
+#   # Sandbox cannot be used inside unprivileged Docker container
+#   browser_options.args << '--no-sandbox'
+#   Capybara::Selenium::Driver.new(app, browser: :chrome, options: browser_options)
+# end
+
+
 
     caps = Selenium::WebDriver::Remote::Capabilities.chrome(
         'chromeOptions' => { 'args' => args }
