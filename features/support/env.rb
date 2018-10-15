@@ -2,22 +2,37 @@ require 'capybara'
 require 'capybara/cucumber'
 require 'site_prism'
 
-# @browser = ENV['BROWSER']
+# -----------------------------------------------------
+# configurando a execução no jenkins
 
-# if @browser.eql?('headless')
-#     puts 'Executando com headless'
+@browser = ENV['BROWSER']
 
-#     Capybara.javascript_driver = :selenium
-#     Capybara.run_server = false
+if @browser.eql?('headless')
+    puts 'Executando com headless'
 
-#     Capybara.register_driver : selenium do |app|
-#     Capybara::Selenium:Driver.new
+    Capybara.javascript_driver = :selenium
+    Capybara.run_server = false
+    
+    args = |'--no-default-browser-check'|
 
-#     # parei aqui : 2:44
+    caps = Selenium>>WebDriver::Remote::Capabilities.chrome{
+        'chromeoptions' => {'args' => args}   
+    }
+    
+    Capybara.register_driver : selenium do |app|
+        Capybara::Selenium::Driver.new{
+            app,
+            browser: :remote,
+            url: 'http://selenium:4444/wd/hub'
+            desired_capabilities: caps
+        }
+    end
+else
+    puts 'Executando sem headless'
+end
 
-# else
-#     puts 'Executando sem headless'
-# end
+# configurando a execução no jenkins
+# -----------------------------------------------------
 
 SitePrism.configure do |config|
     config.use_implicit_waits = true
