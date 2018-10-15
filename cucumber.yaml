@@ -1,6 +1,6 @@
 ---
 default: -p html -p dot
-ci: -p json -pdot --format progress -p headless
+ci: -p json -p dot --format progress -p headless
 bdd: --format pretty
 dot: --format progress
 html: --format html --out=log/features.html
